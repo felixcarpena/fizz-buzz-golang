@@ -2,22 +2,32 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	"os"
+	"strconv"
 )
 
-func fizzbuzz(value int) string {
-	if value%15 == 0 {
-		return "fizz-buzz"
-	}
-	if value%3 == 0 {
-		return "fizz"
-	}
-	if value%5 == 0 {
-		return "buzz"
+type Rule struct {
+	Numbers []int
+	Value   string
+}
+
+func fizzbuzz(rules []Rule, value int) string {
+	for _, rule := range rules {
+		for _, number := range rule.Numbers {
+			if value%number == 0 {
+				return rule.Value
+			}
+		}
 	}
 	return fmt.Sprint(value)
 }
 
+func configurableFizzbuzz(value int) string {
+	rules := []Rule{Rule{[]int{15}, "fizz-buzz"}, Rule{[]int{3}, "fizz"}, Rule{[]int{5}, "buzz"}}
+	return fizzbuzz(rules, value)
+}
+
 func main() {
-	fmt.Printf(fizzbuzz(rand.Intn(100)))
+	i, _ := strconv.Atoi(os.Args[1:][0])
+	fmt.Printf(configurableFizzbuzz(i))
 }
