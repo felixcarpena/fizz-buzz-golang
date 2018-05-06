@@ -4,26 +4,31 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Rule struct {
-	Numbers []int
-	Value   string
+	Number int
+	Value  string
 }
 
 func fizzbuzz(rules []Rule, value int) string {
+	var result string
 	for _, rule := range rules {
-		for _, number := range rule.Numbers {
-			if value%number == 0 {
-				return rule.Value
-			}
+		if value%rule.Number == 0 {
+			result += rule.Value + " "
 		}
 	}
-	return fmt.Sprint(value)
+
+	if result != "" {
+		return strings.TrimSpace(result)
+	} else {
+		return fmt.Sprint(value)
+	}
 }
 
 func configurableFizzbuzz(value int) string {
-	rules := []Rule{Rule{[]int{15}, "fizz-buzz"}, Rule{[]int{3}, "fizz"}, Rule{[]int{5}, "buzz"}}
+	rules := []Rule{Rule{3, "fizz"}, Rule{5, "buzz"}, Rule{7, "pop"}}
 	return fizzbuzz(rules, value)
 }
 
